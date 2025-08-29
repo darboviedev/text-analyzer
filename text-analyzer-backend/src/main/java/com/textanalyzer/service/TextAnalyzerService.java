@@ -5,6 +5,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.Collator;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -19,6 +20,7 @@ public class TextAnalyzerService {
 
     @PostConstruct
     public void initVowels(){
+        // TODO braucht man eigenltich nicht - fehlende .properties führt beim Start zum Absturz
         if (configuredVowels == null){
             throw new IllegalStateException("textanalyzer.properties file is missing");
         }
@@ -43,12 +45,12 @@ public class TextAnalyzerService {
         } else if (TextAnalyzerConstants.MODE_CONSONANTS.equalsIgnoreCase(mode)) {
             return countCharacters(text, c -> Character.isLetter(c) && !configuredVowelSet.contains(c));
         }
-
+        // TODO unbekannter Modus
         return Collections.emptyMap();
     }
 
     private Map<String, Integer> countCharacters(String text, Predicate<Character> shouldCount) {
-        Map<String, Integer> result = new HashMap<>();
+        Map<String, Integer> result = new TreeMap<>(Collator.getInstance(Locale.GERMAN));
 
         for (char c : text.toLowerCase().toCharArray()) {
             if (shouldCount.test(c)) {
