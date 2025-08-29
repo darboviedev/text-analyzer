@@ -3,6 +3,7 @@ package com.textanalyzer.controller;
 import com.textanalyzer.model.rest.AnalysisRequest;
 import com.textanalyzer.model.rest.AnalysisResponse;
 import com.textanalyzer.service.TextAnalyzerService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +21,8 @@ public class TextAnalyzerController {
         this.analyzerService = analyzerService;
     }
     @PostMapping("/analyze")
-    public AnalysisResponse analyze(@RequestBody AnalysisRequest request) {
-        Map<String, Integer> counts = analyzerService.analyzeText(request.getText(), request.getMode());
+    public AnalysisResponse analyze(@Valid @RequestBody AnalysisRequest request) {
+        Map<String, Integer> counts = analyzerService.analyzeText(request.getAnalysisText(), request.getAnalysisMode());
         return new AnalysisResponse(counts);
     }
 }

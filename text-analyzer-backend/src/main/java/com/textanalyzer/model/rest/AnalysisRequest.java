@@ -1,23 +1,28 @@
 package com.textanalyzer.model.rest;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class AnalysisRequest {
 
-    private String text;
-    private String mode;
+    @NotBlank(message = "Analysis text may not be null or empty")
+    private String analysisText;
 
-    public String getText() {
-        return text;
+    @NotBlank(message = "Analysis mode may not be null or empty")
+    private String analysisMode;
+
+    public String getAnalysisText() {
+        return analysisText;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setAnalysisText(String analysisText) {
+        this.analysisText = analysisText;
     }
 
-    public String getMode() {
-        return mode;
+    public String getAnalysisMode() {
+        return analysisMode;
     }
 
-    public void setMode(String mode) {
-        this.mode = mode;
+    public void setAnalysisMode(String analysisMode) {
+        this.analysisMode = analysisMode;
     }
 }
