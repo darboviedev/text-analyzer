@@ -1,4 +1,4 @@
-package com.textanalyzer.model.rest;
+package com.textanalyzer.dto;
 
 import java.util.Map;
 

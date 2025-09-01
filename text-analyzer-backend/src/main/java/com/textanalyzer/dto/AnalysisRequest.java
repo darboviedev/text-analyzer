@@ -1,4 +1,4 @@
-package com.textanalyzer.model.rest;
+package com.textanalyzer.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
