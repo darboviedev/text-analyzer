@@ -21,7 +21,7 @@ public class TextAnalyzerServiceTest {
 
     @Test
     void testAnalyzeTextWithModeVowels() {
-        Map<String, Integer> result = service.analyzeText("peuvent être trouvées ici ou là,", "vowels");
+        Map<String, Integer> result = service.analyzeText("peuvent être trouvées ici ou là,", "vowels").getLetterCounts();
         assertEquals(7, result.size());
         assertEquals(1, result.get("À"));
         assertEquals(4, result.get("E"));
@@ -34,7 +34,7 @@ public class TextAnalyzerServiceTest {
 
     @Test
     void testAnalyzeTextWithModeConsonant() {
-        Map<String, Integer> result = service.analyzeText("peuvent être trouvées ici ou là,", "consonants");
+        Map<String, Integer> result = service.analyzeText("peuvent être trouvées ici ou là,", "consonants").getLetterCounts();
         assertEquals(8, result.size());
         assertEquals(1, result.get("C"));
         assertEquals(1, result.get("L"));

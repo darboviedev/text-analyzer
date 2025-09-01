@@ -1,13 +1,13 @@
 package com.textanalyzer.dto;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 
 public class AnalysisRequest {
 
-    @NotBlank(message = "Analysis text may not be null or empty")
+    @NotEmpty(message = "Analysis text may not be null or empty")
     private String analysisText;
 
-    @NotBlank(message = "Analysis mode may not be null or empty")
+    @NotEmpty(message = "Analysis mode may not be null or empty")
     private String analysisMode;
 
     public String getAnalysisText() {

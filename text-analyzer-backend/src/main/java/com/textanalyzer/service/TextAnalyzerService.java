@@ -1,5 +1,7 @@
 package com.textanalyzer.service;
 
+import com.textanalyzer.dto.AnalysisResult;
+import com.textanalyzer.exceptions.InvalidRequestParameterException;
 import com.textanalyzer.util.TextAnalyzerConstants;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,18 +37,24 @@ public class TextAnalyzerService {
                 .collect(Collectors.toSet());
     }
 
-    public Map<String, Integer> analyzeText(String text, String mode) {
-        if (text == null || text.isEmpty()) {
-            return Collections.emptyMap();
+    public AnalysisResult analyzeText(String analysisText, String analysisMode) {
+
+        if (!analysisMode.equalsIgnoreCase(TextAnalyzerConstants.MODE_VOWELS) &&
+        !analysisMode.equalsIgnoreCase(TextAnalyzerConstants.MODE_CONSONANTS)) {
+            throw new InvalidRequestParameterException("Invalid Analysis Mode");
         }
 
-        if (TextAnalyzerConstants.MODE_VOWELS.equalsIgnoreCase(mode)) {
-            return countCharacters(text, c -> configuredVowelSet.contains(c));
-        } else if (TextAnalyzerConstants.MODE_CONSONANTS.equalsIgnoreCase(mode)) {
-            return countCharacters(text, c -> Character.isLetter(c) && !configuredVowelSet.contains(c));
+        if (TextAnalyzerConstants.MODE_VOWELS.equalsIgnoreCase(analysisMode)) {
+            return new AnalysisResult(
+                    countCharacters(analysisText, c -> configuredVowelSet.contains(c)),
+                    analysisText,
+                    analysisMode);
+        } else  {
+            return new AnalysisResult(
+                    countCharacters(analysisText, c -> Character.isLetter(c) && !configuredVowelSet.contains(c)),
+                    analysisText,
+                    analysisMode);
         }
-        // TODO unbekannter Modus
-        return Collections.emptyMap();
     }
 
     private Map<String, Integer> countCharacters(String text, Predicate<Character> shouldCount) {
