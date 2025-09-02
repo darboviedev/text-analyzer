@@ -3,14 +3,12 @@ package com.textanalyzer.service;
 import com.textanalyzer.dto.AnalysisResult;
 import com.textanalyzer.exceptions.InvalidRequestParameterException;
 import com.textanalyzer.util.TextAnalyzerConstants;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.Collator;
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Service
 public class TextAnalyzerService {

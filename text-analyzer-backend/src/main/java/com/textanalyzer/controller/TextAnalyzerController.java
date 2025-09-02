@@ -19,7 +19,6 @@ public class TextAnalyzerController {
         this.analyzerService = analyzerService;
     }
 
-    // TODO in @Get umwandeln
     @PostMapping("/analysis")
     public ResponseEntity<AnalysisResult> analyze(@Valid @RequestBody AnalysisRequest request) {
         return ResponseEntity.ok(analyzerService.analyzeText(request.getAnalysisText(), request.getAnalysisMode()));
