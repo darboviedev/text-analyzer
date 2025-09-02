@@ -3,9 +3,10 @@ package com.textanalyzer.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TextAnalyzerServiceTest {
 
@@ -14,9 +15,10 @@ public class TextAnalyzerServiceTest {
     @BeforeEach
     void setUp() {
         service = new TextAnalyzerService();
+        List<String> vowelsList = new ArrayList<>(List.of("a","e","i","o","u","á","à","â","ä","ã","å","ā","é","è","ê","ë","ē","ė","ę", "í","ì","î","ï","ī","į",
+                "ó","ò","ô","ö","õ","ø","ō","ú","ù","û","ü","ū"));
         ReflectionTestUtils.setField(service,
-                "configuredVowels", ",à,á,â,ã,ä,å,æ,e,è,é,ê,ë,i,ì,í,î,ï,o,ò,ó,ô,õ,ö,ø,œ,u,ù,ú,û,ü,ű");
-        service.initVowels();
+                "vowelsList", vowelsList);
     }
 
     @Test
@@ -44,21 +46,5 @@ public class TextAnalyzerServiceTest {
         assertEquals(1, result.get("S"));
         assertEquals(3, result.get("T"));
         assertEquals(2, result.get("V"));
-    }
-
-    @Test
-    void testInitVowelsThrowsWhenNull() {
-        service = new TextAnalyzerService();
-        ReflectionTestUtils.setField(service, "configuredVowels", null);
-        Exception exception = assertThrows(IllegalStateException.class, service::initVowels);
-        assertEquals("textanalyzer.properties file is missing", exception.getMessage());
-    }
-
-    @Test
-    void testInitVowelsThrowsWhenEmpty() {
-        service = new TextAnalyzerService();
-        ReflectionTestUtils.setField(service, "configuredVowels", "");
-        Exception exception = assertThrows(IllegalStateException.class, service::initVowels);
-        assertEquals("textanalyzer.properties is empty", exception.getMessage());
     }
 }

@@ -15,27 +15,9 @@ import java.util.stream.Collectors;
 @Service
 public class TextAnalyzerService {
 
-    @Value("${textanalyzer.vowels}")
-    String configuredVowels;
+    @Value("#{loadVowels.vowels}")
+    List<String> vowelsList;
 
-    Set<Character> configuredVowelSet;
-
-    @PostConstruct
-    public void initVowels(){
-        // TODO braucht man eigenltich nicht - fehlende .properties führt beim Start zum Absturz
-        if (configuredVowels == null){
-            throw new IllegalStateException("textanalyzer.properties file is missing");
-        }
-        if (configuredVowels.isEmpty()) {
-            throw new IllegalStateException("textanalyzer.properties is empty");
-        }
-
-        configuredVowelSet = Arrays.stream(configuredVowels.split(","))
-                .map(String::trim)
-                .filter(s -> !s.isEmpty())
-                .map(s -> s.toLowerCase().charAt(0))
-                .collect(Collectors.toSet());
-    }
 
     public AnalysisResult analyzeText(String analysisText, String analysisMode) {
 
@@ -43,15 +25,17 @@ public class TextAnalyzerService {
         !analysisMode.equalsIgnoreCase(TextAnalyzerConstants.MODE_CONSONANTS)) {
             throw new InvalidRequestParameterException("Invalid Analysis Mode");
         }
-
+        List<Character> vowelChars = vowelsList.stream()
+                .map(s -> s.charAt(0))
+                .toList();
         if (TextAnalyzerConstants.MODE_VOWELS.equalsIgnoreCase(analysisMode)) {
             return new AnalysisResult(
-                    countCharacters(analysisText, c -> configuredVowelSet.contains(c)),
+                    countCharacters(analysisText, vowelChars::contains),
                     analysisText,
                     analysisMode);
         } else  {
             return new AnalysisResult(
-                    countCharacters(analysisText, c -> Character.isLetter(c) && !configuredVowelSet.contains(c)),
+                    countCharacters(analysisText, c -> Character.isLetter(c) && !vowelChars.contains(c)),
                     analysisText,
                     analysisMode);
         }
