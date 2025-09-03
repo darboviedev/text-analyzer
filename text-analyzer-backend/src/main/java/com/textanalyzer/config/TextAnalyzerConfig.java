@@ -14,9 +14,9 @@ import java.io.IOException;
 public class TextAnalyzerConfig {
 
     @Bean
-    public VowelsList loadVowels() throws IOException {
+    public VowelsSet loadVowels() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(new ClassPathResource("config/vowels.json").getFile(),
-                VowelsList.class);
+                VowelsSet.class);
     }
 }

@@ -9,12 +9,13 @@ import org.springframework.stereotype.Service;
 import java.text.Collator;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 public class TextAnalyzerService {
 
     @Value("#{loadVowels.vowels}")
-    List<String> vowelsList;
+    Set<String> vowelsSet;
 
 
     public AnalysisResult analyzeText(String analysisText, String analysisMode) {
@@ -23,17 +24,18 @@ public class TextAnalyzerService {
         !analysisMode.equalsIgnoreCase(TextAnalyzerConstants.MODE_CONSONANTS)) {
             throw new InvalidRequestParameterException("Invalid Analysis Mode");
         }
-        List<Character> vowelChars = vowelsList.stream()
+        Set<Character> vowelsCharSet = vowelsSet.stream()
                 .map(s -> s.charAt(0))
-                .toList();
+                .collect(Collectors.toSet());
+
         if (TextAnalyzerConstants.MODE_VOWELS.equalsIgnoreCase(analysisMode)) {
             return new AnalysisResult(
-                    countCharacters(analysisText, vowelChars::contains),
+                    countCharacters(analysisText, vowelsCharSet::contains),
                     analysisText,
                     analysisMode);
         } else  {
             return new AnalysisResult(
-                    countCharacters(analysisText, c -> Character.isLetter(c) && !vowelChars.contains(c)),
+                    countCharacters(analysisText, c -> Character.isLetter(c) && !vowelsCharSet.contains(c)),
                     analysisText,
                     analysisMode);
         }

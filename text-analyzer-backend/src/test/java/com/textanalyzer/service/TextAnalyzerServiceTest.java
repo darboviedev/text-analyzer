@@ -3,9 +3,9 @@ package com.textanalyzer.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TextAnalyzerServiceTest {
@@ -15,10 +15,10 @@ public class TextAnalyzerServiceTest {
     @BeforeEach
     void setUp() {
         service = new TextAnalyzerService();
-        List<String> vowelsList = new ArrayList<>(List.of("a","e","i","o","u","á","à","â","ä","ã","å","ā","é","è","ê","ë","ē","ė","ę", "í","ì","î","ï","ī","į",
+        Set<String> vowelsSet = new HashSet<>(List.of("a","e","i","o","u","á","à","â","ä","ã","å","ā","é","è","ê","ë","ē","ė","ę", "í","ì","î","ï","ī","į",
                 "ó","ò","ô","ö","õ","ø","ō","ú","ù","û","ü","ū"));
         ReflectionTestUtils.setField(service,
-                "vowelsList", vowelsList);
+                "vowelsSet", vowelsSet);
     }
 
     @Test
